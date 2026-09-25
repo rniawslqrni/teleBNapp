@@ -381,8 +381,6 @@ let marketWS = null;
 let reconnectTimer = null;
 let restFallbackTimer = null;
 
-let reconnectAttempts = 0;
-
 let appGeneration = 0;
 
 let candles = [];
@@ -405,6 +403,8 @@ let lastMTFFetch = 0;
 
 const MTF_REFRESH_MS = 60000;
 const MAX_CANDLES = 200;
+
+
 /* ============================================================
    TELEGRAM NOTIFICATION
 ============================================================ */
@@ -2104,26 +2104,21 @@ function startMarketWS() {
     marketWS =
         new WebSocket(url);
 
-marketWS.onopen = () => {
 
-    if (
-        generation !==
-        appGeneration
-    ) {
-        return;
-    }
+    marketWS.onopen =
+        () => {
 
-    reconnectAttempts = 0;
+            if (
+                generation !==
+                appGeneration
+            ) {
+                return;
+            }
 
-    console.log(
-        "[WS] Connected"
-    );
 
-    setConnectionStatus(
-        "Connected",
-        true
-    );
-};
+            console.log(
+                "[WS] Connected"
+            );
 
 
             setConnectionStatus(
